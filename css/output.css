@@ -7,6 +7,7 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-orange-500: oklch(70.5% 0.213 47.604);
     --color-amber-600: oklch(66.6% 0.179 58.318);
@@ -15,14 +16,10 @@
     --color-indigo-500: oklch(58.5% 0.233 277.117);
     --color-purple-600: oklch(55.8% 0.288 302.321);
     --color-gray-50: oklch(98.5% 0.002 247.839);
-    --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-300: oklch(87.2% 0.01 258.338);
-    --color-gray-400: oklch(70.7% 0.022 261.325);
     --color-gray-700: oklch(37.3% 0.034 259.733);
     --color-white: #fff;
     --spacing: 0.25rem;
-    --container-xl: 36rem;
-    --container-6xl: 72rem;
     --text-sm: 0.875rem;
     --text-sm--line-height: calc(1.25 / 0.875);
     --text-lg: 1.125rem;
@@ -186,6 +183,18 @@
   }
 }
 @layer utilities {
+  .absolute {
+    position: absolute;
+  }
+  .relative {
+    position: relative;
+  }
+  .z-0 {
+    z-index: 0;
+  }
+  .z-10 {
+    z-index: 10;
+  }
   .mx-auto {
     margin-inline: auto;
   }
@@ -216,35 +225,20 @@
   .hidden {
     display: none;
   }
-  .table {
-    display: table;
-  }
   .h-full {
     height: 100%;
+  }
+  .w-60 {
+    width: calc(var(--spacing) * 60);
   }
   .w-full {
     width: 100%;
   }
-  .max-w-6xl {
-    max-width: var(--container-6xl);
-  }
-  .max-w-xl {
-    max-width: var(--container-xl);
-  }
-  .border-collapse {
-    border-collapse: collapse;
-  }
   .cursor-pointer {
     cursor: pointer;
   }
-  .resize {
-    resize: both;
-  }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-  .flex-col {
-    flex-direction: column;
   }
   .items-center {
     align-items: center;
@@ -299,12 +293,6 @@
   .bg-gray-50 {
     background-color: var(--color-gray-50);
   }
-  .bg-gray-200 {
-    background-color: var(--color-gray-200);
-  }
-  .bg-gray-400 {
-    background-color: var(--color-gray-400);
-  }
   .bg-green-600 {
     background-color: var(--color-green-600);
   }
@@ -317,11 +305,14 @@
   .bg-purple-600 {
     background-color: var(--color-purple-600);
   }
+  .bg-red-500 {
+    background-color: var(--color-red-500);
+  }
   .bg-red-600 {
     background-color: var(--color-red-600);
   }
-  .bg-white {
-    background-color: var(--color-white);
+  .object-cover {
+    object-fit: cover;
   }
   .p-6 {
     padding: calc(var(--spacing) * 6);
@@ -380,22 +371,12 @@
   .text-white {
     color: var(--color-white);
   }
-  .underline {
-    text-decoration-line: underline;
-  }
   .shadow-xl {
     --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
-  }
   .blur {
     --tw-blur: blur(8px);
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .md\:items-center {
@@ -405,7 +386,35 @@
   }
 }
 * {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+#rooms {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(100px, 1.2fr) minmax(100px, 1.2fr) minmax(100px, 1fr) minmax(100px, 1.4fr) minmax(100px, 1.4fr);
+  grid-template-rows: repeat(3, minmax(100px, 1fr));
+  grid-template-areas: "conference_room conference_room .  server_room security_room" "reception_room reception_room . . ." "reception_room reception_room  . staff_room vault_room";
+}
+#side_bar {
+  grid-area: side_bar;
+}
+.conference_room {
+  grid-area: conference_room;
+}
+.reception_room {
+  grid-area: reception_room;
+}
+.server_room {
+  grid-area: server_room;
+}
+.security_room {
+  grid-area: security_room;
+}
+.staff_room {
+  grid-area: staff_room;
+}
+.vault_room {
+  grid-area: vault_room;
 }
 @property --tw-space-y-reverse {
   syntax: "*";
@@ -486,11 +495,6 @@
   inherits: false;
   initial-value: 0 0 #0000;
 }
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
 @property --tw-blur {
   syntax: "*";
   inherits: false;
@@ -564,7 +568,6 @@
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;

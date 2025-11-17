@@ -1,13 +1,50 @@
 @import "tailwindcss";
 
-*{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+* {
+  font-family: "segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+#rooms {
+  height: 100vh;
+  display: grid;
 
-/* #main {
-display: grid;
-grid-template-columns: repeat(6, 1fr);
-grid-template-rows: repeat(4, 1fr);
-gap: 10px;
-}  */
+  /* grid-template-columns: repeat(6, minmax(100px, 1fr)); */
+
+  grid-template-columns:
+    minmax(100px, 1.2fr)
+    minmax(100px, 1.2fr)
+    minmax(100px, 1fr)
+    minmax(100px, 1.4fr)
+    minmax(100px, 1.4fr);
+  grid-template-rows: repeat(3, minmax(100px, 1fr));
+  /* gap: 2px; */
+  grid-template-areas:
+    "conference_room conference_room .  server_room security_room"
+    "reception_room reception_room . . ."
+    "reception_room reception_room  . staff_room vault_room";
+}
+
+#side_bar {
+  grid-area: side_bar;
+}
+
+.conference_room {
+  grid-area: conference_room;
+}
+
+.reception_room {
+  grid-area: reception_room;
+}
+
+.server_room {
+  grid-area: server_room;
+}
+.security_room {
+  grid-area: security_room;
+}
+.staff_room {
+  grid-area: staff_room;
+}
+.vault_room {
+  grid-area: vault_room;
+}
