@@ -5,12 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveProfile = document.getElementById("saveProfile");
   const saveExp = document.getElementById("saveExp");
   const expDisplay = document.getElementById("expDisplay");
+  // const side_bar = document.getElementById("side_bar");
+  const pushStaff = document.getElementById("pushStaff");
 
-  closeForm.addEventListener("click", () => {
+  closeForm.addEventListener("click", (e) => {
+    e.preventDefault()
     addWorkerForm.classList.add("hidden");
   });
 
-  addNewWorker.addEventListener("click", () => {
+  addNewWorker.addEventListener("click", (e) => {
+    e.preventDefault()
     addWorkerForm.classList.remove("hidden");
   });
 
@@ -66,13 +70,20 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   let saveExperiences = [];
-  const workerData = {
-    exp: saveExperiences,
-    phone: "",
-    email: "",
-    fullName: "",
-    role: "",
-  };
+
+  saveExp.addEventListener("click", (e) => {
+    e.preventDefault();
+    const experiences = document.getElementById("experiences").value.trim();
+    if (!experiences) return;
+    saveExperiences.push(experiences);
+
+    const expUnit = document.createElement("div");
+    expUnit.innerHTML += `<span
+                class="text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded"
+                >${experiences}</span
+              >`;
+    expDisplay.appendChild(expUnit);
+  });
 
   saveProfile.addEventListener("click", (e) => {
     e.preventDefault();
@@ -82,27 +93,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const phone = document.getElementById("phone").value.trim();
     if (!fullName || !email || !phone || !role) return;
 
-    workerData.fullName = fullName;
-    workerData.role = role;
-    workerData.email = email;
-    workerData.phone = phone;
-    console.log(workerData);
-  });
+    const newWorker = {
+      fullName,
+      role,
+      email,
+      phone,
+      exp: [...saveExperiences],
+    };
 
-  saveExp.addEventListener("click", (e) => {
-    e.preventDefault();
-    const experiences = document.getElementById("experiences").value.trim();
-    if (!experiences) return;
-    saveExperiences.push(experiences);
-    workerData.exp = saveExperiences;
+    let allWorkers = JSON.parse(localStorage.getItem("allWorkers")) || [];
+    allWorkers.push(newWorker);
+    localStorage.setItem("allWorkers", JSON.stringify(allWorkers));
 
-    const expUnit = document.createElement("div");
-    expUnit.innerHTML += `<span
-                class="text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded"
-                >${experiences}</span
-              >`;
-    expDisplay.appendChild(expUnit);
+    const staffView = document.createElement("div");
+    staffView.innerHTML = `<div
+    class="border border-gray-400 w-full text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2"
+>
+    <img
+        src="assets/1.png"
+        alt="img"
+        class="rounded-full  border-2 border-blue-500 overflow-hidden h-13 w-13"
+    />
+    <div class="text-left">
+        <h4 class="text-gray-900 text-xl font-semibold">${fullName}</h4>
+        <p class="text-gray-900">${role}</p>
+    </div>
+    <button
+        class="text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900"
+    >
+        Edit
+    </button>
+</div>`;
 
-    console.log(saveExperiences);
+    pushStaff.appendChild(staffView);
+    saveExperiences = [];
   });
 });

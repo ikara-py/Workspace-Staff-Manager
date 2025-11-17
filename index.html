@@ -10,7 +10,7 @@
     <div class="relative flex justify-center">
       <form
         id="addWorkerForm"
-        class="overflow-scroll max-w-3xl absolute z-50 bg-gray-50 mx-auto p-6 shadow-xl rounded-lg space-y-6 w-1/3"
+        class="hidden overflow-scroll max-w-3xl absolute z-50 bg-gray-50 mx-auto p-6 shadow-xl rounded-lg space-y-6 w-1/3"
       >
         <button
           id="closeForm"
@@ -137,8 +137,7 @@
 
         <div class="space-y-4">
           <div>
-            <div id="expDisplay" class="flex w-full gap-1 flex-wrap">
-            </div>
+            <div id="expDisplay" class="flex w-full gap-1 flex-wrap"></div>
             <label
               for="experiences"
               class="block text-sm font-medium text-gray-700 mb-1"
@@ -178,33 +177,39 @@
     <div id="main_body" class="flex">
       <aside
         id="side_bar"
-        class="w-70 bg-gray-100 text-white flex flex-col items-center relative"
+        class="w-85 bg-gray-100 text-white flex flex-col items-center h-screen"
       >
         <span
           class="text-blue-600 font-bold w-full text-center mt-4 text-lg b-2"
           >Staff Members</span
         >
+
         <div
-          class="border border-gray-400 w-11/12 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl"
+          id="pushStaff"
+          class="w-full overflow-y-auto flex flex-col items-center"
         >
-          <img
-            src="assets/1.png"
-            alt="img"
-            class="rounded-full overflow-hidden h-13 w-13"
-          />
-          <div class="text-left">
-            <h4 class="text-gray-900 text-xl font-semibold">title</h4>
-            <p class="text-gray-900">it</p>
-          </div>
-          <button
-            class="text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900"
+          <!-- <div
+            class="border border-gray-400 w-11/12 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2"
           >
-            Edit
-          </button>
+            <img
+              src="assets/1.png"
+              alt="img"
+              class="rounded-full border-2 border-blue-500 overflow-hidden h-13 w-13"
+            />
+            <div class="text-left">
+              <h4 class="text-gray-900 text-xl font-semibold">title</h4>
+              <p class="text-gray-900">it</p>
+            </div>
+            <button
+              class="text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900"
+            >
+              Edit
+            </button>
+          </div> -->
         </div>
         <button
           id="addNewWorker"
-          class="bottom-4 w-11/12 px-4 py-2 bg-blue-500 rounded text-lg font-light absolute cursor-pointer hover:bg-blue-700"
+          class="w-11/12 px-4 py-2 bg-blue-500 rounded text-lg font-light cursor-pointer hover:bg-blue-700 z-50 mt-auto mb-4"
         >
           Add New Worker
         </button>
