@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const addNewWorker = document.getElementById("addNewWorker");
   const closeForm = document.getElementById("closeForm");
   const addWorkerForm = document.getElementById("addWorkerForm");
+  const saveProfile = document.getElementById("saveProfile");
+  const saveExp = document.getElementById("saveExp");
+  const expDisplay = document.getElementById("expDisplay");
 
   closeForm.addEventListener("click", () => {
     addWorkerForm.classList.add("hidden");
@@ -10,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   addNewWorker.addEventListener("click", () => {
     addWorkerForm.classList.remove("hidden");
   });
-  
+
   const validationRules = {
     photo_upload: {
       regex: /^https?:\/\/.+\..+/i,
@@ -49,10 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const inputsToCheck = document.querySelectorAll("input[name]");
+  const inputsToCheck = document.querySelectorAll("input[id]");
 
   inputsToCheck.forEach((input) => {
-    const fieldName = input.name;
+    const fieldName = input.id;
     if (validationRules[fieldName]) {
       input.addEventListener("blur", () => {
         const rule = validationRules[fieldName];
@@ -61,19 +64,45 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
-  const experiences = [];
+
+  let saveExperiences = [];
   const workerData = {
-    exp,
-    phone,
-    email,
-    fullName,
-    role,
+    exp: saveExperiences,
+    phone: "",
+    email: "",
+    fullName: "",
+    role: "",
   };
 
-  const exp = document.getElementsByName("experiences");
-  const phone = document.getElementsByName("phone");
-  const email = document.getElementsByName("email");
-  const fullName = document.getElementsByName("experiences");
-  const role = document.getElementsByName("role");
-  console.log(phone);
+  saveProfile.addEventListener("click", (e) => {
+    e.preventDefault();
+    const fullName = document.getElementById("full_name").value.trim();
+    const role = document.getElementById("role").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    if (!fullName || !email || !phone || !role) return;
+
+    workerData.fullName = fullName;
+    workerData.role = role;
+    workerData.email = email;
+    workerData.phone = phone;
+    console.log(workerData);
+  });
+
+  saveExp.addEventListener("click", (e) => {
+    e.preventDefault();
+    const experiences = document.getElementById("experiences").value.trim();
+    if (!experiences) return;
+    saveExperiences.push(experiences);
+    workerData.exp = saveExperiences;
+
+    const expUnit = document.createElement("div");
+    expUnit.innerHTML += `<span
+                class="text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded"
+                >${experiences}</span
+              >`;
+    expDisplay.appendChild(expUnit);
+
+    console.log(saveExperiences);
+  });
 });
