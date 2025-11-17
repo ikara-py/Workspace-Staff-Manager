@@ -1,6 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   const addNewWorker = document.getElementById("addNewWorker");
+  const closeForm = document.getElementById("closeForm");
+  const addWorkerForm = document.getElementById("addWorkerForm");
 
+  closeForm.addEventListener("click", () => {
+    addWorkerForm.classList.add("hidden");
+  });
+
+  addNewWorker.addEventListener("click", () => {
+    addWorkerForm.classList.remove("hidden");
+  });
+  
   const validationRules = {
     photo_upload: {
       regex: /^https?:\/\/.+\..+/i,
