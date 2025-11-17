@@ -34,7 +34,7 @@ This project aims to provide an interactive graphical interface for managing emp
   3. Server Room  
   4. Security Room  
   5. Staff Room  
-  6. Archives Room  
+  6. Vault Room  
 - Apply logical restrictions:  
   - Reception → Receptionists only  
   - Server Room → IT Technicians only  
@@ -77,5 +77,11 @@ This project aims to provide an interactive graphical interface for managing emp
 1. Clone the repository:  
    ```bash
    git clone https://github.com/ikara-py/Workspace-Staff-Manager.git
+
+## incase you want to edit the file run this
+   ```bash
+   npx @tailwindcss/cli -i ./css/style.css -o ./css/output.css --watch
+
+---
 
 ## by Ali Kara

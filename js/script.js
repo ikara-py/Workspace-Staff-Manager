@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const addNewWorker = document.getElementById("addNewWorker");
+
   const validationRules = {
     photo_upload: {
       regex: /^https?:\/\/.+\..+/i,
@@ -49,6 +51,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+  const experiences = [];
+  const workerData = {
+    exp,
+    phone,
+    email,
+    fullName,
+    role,
+  };
 
-  
+  const exp = document.getElementsByName("experiences");
+  const phone = document.getElementsByName("phone");
+  const email = document.getElementsByName("email");
+  const fullName = document.getElementsByName("experiences");
+  const role = document.getElementsByName("role");
+  console.log(phone);
 });

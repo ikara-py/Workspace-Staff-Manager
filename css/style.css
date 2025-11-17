@@ -24,6 +24,10 @@
     "reception_room reception_room  . staff_room vault_room";
 }
 
+form {
+  margin: 1% 0;
+  height: 35rem;
+}
 #side_bar {
   grid-area: side_bar;
 }

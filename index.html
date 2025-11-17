@@ -7,155 +7,197 @@
     <script src="js/script.js" defer></script>
   </head>
   <body>
-    <form class="hidden bg-gray-50 mx-auto p-6 shadow-xl rounded-lg space-y-6">
-      <h3 class="text-2xl font-semibold text-gray-700 border-b pb-2 mb-4">
-        Personal Details
-      </h3>
+    <div class="relative flex justify-center">
+      <form
+        class="hidden overflow-scroll max-w-3xl absolute z-50 bg-gray-50 mx-auto p-6 shadow-xl rounded-lg space-y-6 w-1/3"
+      >
+        <h3 class="text-2xl font-semibold text-gray-700 border-b mb-4">
+          Personal Details
+        </h3>
 
-      <div class="gap-6 md:items-center">
-        <div class="flex gap-4 w-full items-center">
-          <div class="w-full space-y-4">
-            <label
-              for="photo_upload"
-              class="text-sm font-medium text-gray-700 mb-2"
-              >Profile Photo Link</label
-            >
-            <input
-              type="text"
-              id="photo_upload"
-              name="photo_upload"
-              placeholder="full URL (https://…)"
-              class="w-full px-1 py-1 border border-gray-300 rounded-lg"
-            />
-            <span
-              id="err_photo_upload"
-              class="hidden text-red-600 text-sm mt-1"
-            ></span>
-
-            <div>
+        <div class="gap-6 md:items-center">
+          <div class="flex gap-4 w-full items-center">
+            <div class="w-full space-y-4">
               <label
-                for="full_name"
-                class="block text-sm font-medium text-gray-700 mb-1"
-                >Full Name:</label
+                for="photo_upload"
+                class="text-sm font-medium text-gray-700 mb-2"
+                >Profile Photo Link</label
               >
               <input
                 type="text"
-                id="full_name"
-                name="full_name"
-                placeholder="2-60 letters/spaces/dashes only"
-                required
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                id="photo_upload"
+                name="photo_upload"
+                placeholder="full URL (https://…)"
+                class="w-full px-1 py-1 border border-gray-300 rounded-lg"
               />
               <span
-                id="err_full_name"
+                id="err_photo_upload"
                 class="hidden text-red-600 text-sm mt-1"
               ></span>
-            </div>
 
-            <div>
-              <label
-                for="role"
-                class="block text-sm font-medium text-gray-700 mb-1"
-                >Role:</label
-              >
-              <input
-                type="text"
-                id="role"
-                name="role"
-                placeholder="2-60 letters/spaces/dashes only"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                required
-              />
-              <span
-                id="err_role"
-                class="hidden text-red-600 text-sm mt-1"
-              ></span>
+              <div>
+                <label
+                  for="full_name"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Full Name:</label
+                >
+                <input
+                  type="text"
+                  id="full_name"
+                  name="full_name"
+                  placeholder="2-60 letters/spaces/dashes only"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                />
+                <span
+                  id="err_full_name"
+                  class="hidden text-red-600 text-sm mt-1"
+                ></span>
+              </div>
+
+              <div>
+                <label
+                  for="role"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Role:</label
+                >
+                <input
+                  type="text"
+                  id="role"
+                  name="role"
+                  placeholder="2-60 letters/spaces/dashes only"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  required
+                />
+                <span
+                  id="err_role"
+                  class="hidden text-red-600 text-sm mt-1"
+                ></span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <h3 class="text-2xl font-semibold text-gray-700 border-b pb-2 mb-4">
-        Contact Information
-      </h3>
+        <h3 class="text-2xl font-semibold text-gray-700 border-b mb-4">
+          Contact Information
+        </h3>
 
-      <div class="grid grid-cols-1 gap-4">
-        <div>
-          <label
-            for="email"
-            class="block text-sm font-medium text-gray-700 mb-1"
-            >Email:</label
-          >
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="example@gmail.com"
-            required
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg"
-          />
-          <span id="err_email" class="hidden text-red-600 text-sm mt-1"></span>
+        <div class="grid grid-cols-1 gap-4">
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Email:</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="example@gmail.com"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            />
+            <span
+              id="err_email"
+              class="hidden text-red-600 text-sm mt-1"
+            ></span>
+          </div>
+
+          <div>
+            <label
+              for="phone"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Phone:</label
+            >
+            <input
+              type="tel"
+              id="phone"
+              placeholder="05/06/07/XXXXXXXX"
+              name="phone"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            />
+            <span
+              id="err_phone"
+              class="hidden text-red-600 text-sm mt-1"
+            ></span>
+          </div>
         </div>
 
-        <div>
-          <label
-            for="phone"
-            class="block text-sm font-medium text-gray-700 mb-1"
-            >Phone:</label
-          >
-          <input
-            type="tel"
-            id="phone"
-            placeholder="05/06/07/XXXXXXXX"
-            name="phone"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg"
-          />
-          <span id="err_phone" class="hidden text-red-600 text-sm mt-1"></span>
-        </div>
-      </div>
+        <h3 class="text-2xl font-semibold text-gray-700 border-b mb-4">
+          Experiences
+        </h3>
 
-      <h3 class="text-2xl font-semibold text-gray-700 border-b pb-2 mb-4">
-        Experiences
-      </h3>
+        <div class="space-y-4">
+          <div>
+            <label
+              for="experiences"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Experiences:</label
+            >
+            <input
+              type="text"
+              id="experiences"
+              name="experiences"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            />
+            <span
+              id="err_experiences"
+              class="hidden text-red-600 text-sm mt-1"
+            ></span>
+          </div>
 
-      <div class="space-y-4">
-        <div>
-          <label
-            for="experiences"
-            class="block text-sm font-medium text-gray-700 mb-1"
-            >Experiences:</label
+          <button
+            type="button"
+            class="save-exp px-4 py-2 bg-indigo-500 text-white font-medium rounded-lg cursor-pointer"
           >
-          <input
-            type="text"
-            id="experiences"
-            name="experiences"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg"
-          />
-          <span
-            id="err_experiences"
-            class="hidden text-red-600 text-sm mt-1"
-          ></span>
+            save experiences
+          </button>
         </div>
 
         <button
-          type="button"
-          class="save-exp px-4 py-2 bg-indigo-500 text-white font-medium rounded-lg cursor-pointer"
-        >
-          save experiences
-        </button>
-      </div>
-
-      <div class="pt-4 border-t mt-6">
-        <input
           type="submit"
-          value="submit Profile"
+          id="saveProfile"
           class="w-full px-4 py-2 bg-green-600 text-white font-bold text-lg rounded-lg cursor-pointer"
-        />
-      </div>
-    </form>
+        >
+          Save Profile
+        </button>
+      </form>
+    </div>
 
     <div id="main_body" class="flex">
-      <aside id="side_bar" class="w-60 bg-red-500 text-white">Sidebar</aside>
+      <aside
+        id="side_bar"
+        class="w-70 bg-gray-100 text-white flex flex-col items-center relative"
+      >
+        <span
+          class="text-blue-600 font-bold w-full text-center mt-4 text-lg mb-2"
+          >Staff Members</span
+        >
+        <div
+          class="border border-gray-400 w-11/12 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl"
+        >
+          <img
+            src="assets/1.png"
+            alt="img"
+            class="rounded-full overflow-hidden h-13 w-13"
+          />
+          <div class="text-left">
+            <h4 class="text-gray-900 text-xl font-semibold">title</h4>
+            <p class="text-gray-900">it</p>
+          </div>
+          <button
+            class="text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900"
+          >
+            Edit
+          </button>
+        </div>
+        <button
+          id="addNewWorker"
+          class="bottom-4 w-11/12 px-4 py-2 bg-blue-500 rounded text-lg font-light absolute cursor-pointer hover:bg-blue-700"
+        >
+          Add New Worker
+        </button>
+      </aside>
 
       <div id="rooms" class="relative w-full">
         <img
@@ -163,14 +205,96 @@
           alt="img"
           class="absolute w-full h-full object-cover z-0"
         />
-        <div class="conference_room bg-amber-600 z-10 text-white">
-          Conference
+        <div
+          class="conference_room z-10 text-white flex flex-col items-center relative"
+        >
+          <div
+            class="flex w-full h-full items-center justify-center text-shadow-2xs"
+          >
+            <span class="">Conference</span>
+          </div>
+
+          <button
+            class="bottom-4 px-4 py-2 bg-blue-500 rounded text-xl font-bold absolute cursor-pointer hover:bg-blue-700"
+          >
+            +
+          </button>
         </div>
-        <div class="reception_room bg-blue-600 z-10 text-white">Reception</div>
-        <div class="server_room bg-purple-600 z-10 text-white">server</div>
-        <div class="security_room bg-green-600 z-10 text-white">security</div>
-        <div class="staff_room bg-red-600 z-10 text-white">staff</div>
-        <div class="vault_room bg-orange-500 z-10 text-white">vault</div>
+        <div
+          class="reception_room z-10 text-white flex flex-col items-center relative"
+        >
+          <div
+            class="flex w-full h-full items-center justify-center text-shadow-2xs"
+          >
+            <span class="">Reception</span>
+          </div>
+
+          <button
+            class="bottom-4 px-4 py-2 bg-blue-500 rounded text-xl font-bold absolute cursor-pointer hover:bg-blue-700"
+          >
+            +
+          </button>
+        </div>
+        <div
+          class="server_room z-10 text-white flex flex-col items-center relative"
+        >
+          <div
+            class="flex w-full h-full items-center justify-center text-shadow-2xs"
+          >
+            <span class="">server</span>
+          </div>
+
+          <button
+            class="bottom-4 px-4 py-2 bg-blue-500 rounded text-xl font-bold absolute cursor-pointer hover:bg-blue-700"
+          >
+            +
+          </button>
+        </div>
+        <div
+          class="security_room z-10 text-white flex flex-col items-center relative"
+        >
+          <div
+            class="flex w-full h-full items-center justify-center text-shadow-2xs"
+          >
+            <span class="">security</span>
+          </div>
+
+          <button
+            class="bottom-4 px-4 py-2 bg-blue-500 rounded text-xl font-bold absolute cursor-pointer hover:bg-blue-700"
+          >
+            +
+          </button>
+        </div>
+        <div
+          class="staff_room z-10 text-white flex flex-col items-center relative"
+        >
+          <div
+            class="flex w-full h-full items-center justify-center text-shadow-2xs"
+          >
+            <span class="">staff</span>
+          </div>
+
+          <button
+            class="bottom-4 px-4 py-2 bg-blue-500 rounded text-xl font-bold absolute cursor-pointer hover:bg-blue-700"
+          >
+            +
+          </button>
+        </div>
+        <div
+          class="vault_room z-10 text-white flex flex-col items-center relative"
+        >
+          <div
+            class="flex w-full h-full items-center justify-center text-shadow-2xs"
+          >
+            <span class="">vault</span>
+          </div>
+
+          <button
+            class="bottom-4 px-4 py-2 bg-blue-500 rounded text-xl font-bold absolute cursor-pointer hover:bg-blue-700"
+          >
+            +
+          </button>
+        </div>
       </div>
     </div>
   </body>
