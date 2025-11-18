@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const updateProfile = document.getElementById("updateProfile");
   const deleteProfile = document.getElementById("deleteProfile");
 
+  const showWorkersModal = document.getElementById("showWorkersModal");
+  const closeShowWorkers = document.getElementById("closeShowWorkers");
+  const showWorkersContent = document.getElementById("showWorkersContent");
+
   closeForm.addEventListener("click", (e) => {
     e.preventDefault();
     addWorkerForm.classList.add("hidden");
@@ -149,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div 
                     class="border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2"
                     data-worker-id="${worker.id}"
-                >
+                    >
                     <img src="assets/1.png" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
                     <div class="text-left">
                         <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
@@ -223,6 +227,50 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("allWorkers", JSON.stringify(workers));
     renderWorkersFromStorage();
     editWorkerForm.classList.add("hidden");
+  });
+
+  function renderAvailableWorkers(roomFilter = null) {
+    showWorkersContent.innerHTML = "";
+    let workers = getWorkers();
+    if (roomFilter) {
+      workers = workers.filter((w) => w.role === roomFilter);
+    }
+    workers.forEach((worker) => {
+      const div = document.createElement("div");
+      div.className =
+        "border border-gray-300 rounded-lg p-4 flex items-center gap-4";
+      div.innerHTML = `
+        <img src="assets/1.png" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+        <div class="text-left">
+          <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
+          <p class="text-sm text-gray-700">${worker.role}</p>
+        </div>
+        <button class="text-xs rounded absolute right-8 px-2 py-1 border border-blue-400 hover:bg-blue-400 hover:border-0 text-gray-900" data-id="${worker.id}">
+                        Assign
+                    </button>
+      `;
+      showWorkersContent.appendChild(div);
+    });
+  }
+
+  const roomMap = {
+    conferenceBtn: "Managers",
+    receptionBtn: "Reception",
+    serverBtn: "Server Room",
+    securityBtn: "Security Room",
+    staffBtn: "Other roles",
+    vaultBtn: "Cleaning",
+  };
+
+  Object.keys(roomMap).forEach((id) => {
+    document.getElementById(id).addEventListener("click", () => {
+      renderAvailableWorkers(roomMap[id]);
+      showWorkersModal.classList.remove("hidden");
+    });
+  });
+
+  closeShowWorkers.addEventListener("click", () => {
+    showWorkersModal.classList.add("hidden");
   });
 
   renderWorkersFromStorage();

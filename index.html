@@ -328,7 +328,8 @@
     </div>
     <div class="relative flex justify-center">
       <div
-        class="showWorkers overflow-scroll max-w-3xl absolute z-50 bg-gray-50 mx-auto p-6 shadow-xl rounded-lg space-y-6 w-1/3"
+        id="showWorkersModal"
+        class="showWorkers hidden overflow-scroll max-w-3xl absolute z-50 bg-gray-50 mx-auto p-6 shadow-xl rounded-lg space-y-6 w-1/3"
       >
         <button
           id="closeShowWorkers"
@@ -338,8 +339,9 @@
         </button>
         <input type="hidden" id="edit_id" name="id" />
         <h3 class="text-2xl font-semibold text-gray-700 border-b mb-4">
-          Edit Worker
+          Aviable Workers
         </h3>
+        <div id="showWorkersContent" class="space-y-4"></div>
       </div>
     </div>
     <div id="main_body" class="flex">
@@ -380,6 +382,7 @@
           </div>
 
           <button
+            id="conferenceBtn"
             class="bottom-4 px-4 py-2 bg-blue-500 hover:text-white rounded text-2xl font-medium hover:scale-105 absolute cursor-pointer hover:bg-blue-700"
           >
             +
@@ -395,6 +398,7 @@
           </div>
 
           <button
+          id="receptionBtn"
             class="bottom-4 px-4 py-2 bg-blue-500 hover:text-white rounded text-2xl font-medium hover:scale-105 absolute cursor-pointer hover:bg-blue-700"
           >
             +
@@ -404,12 +408,14 @@
           class="server_room z-10 text-black flex flex-col items-center relative"
         >
           <div
+          
             class="flex w-full h-full items-center justify-center text-shadow-lg"
           >
             <span class="">server</span>
           </div>
 
           <button
+          id="serverBtn"
             class="bottom-4 px-4 py-2 bg-blue-500 hover:text-white rounded text-2xl font-medium hover:scale-105 absolute cursor-pointer hover:bg-blue-700"
           >
             +
@@ -425,6 +431,7 @@
           </div>
 
           <button
+          id="securityBtn"
             class="bottom-4 px-4 py-2 bg-blue-500 hover:text-white rounded text-2xl font-medium hover:scale-105 absolute cursor-pointer hover:bg-blue-700"
           >
             +
@@ -440,6 +447,7 @@
           </div>
 
           <button
+          id="staffBtn"
             class="bottom-4 px-4 py-2 bg-blue-500 hover:text-white rounded text-2xl font-medium hover:scale-105 absolute cursor-pointer hover:bg-blue-700"
           >
             +
@@ -455,6 +463,7 @@
           </div>
 
           <button
+          id="vaultBtn"
             class="bottom-4 px-4 py-2 bg-blue-500 hover:text-white rounded text-2xl font-medium hover:scale-105 absolute cursor-pointer hover:bg-blue-700"
           >
             +
