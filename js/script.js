@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const pushStaff = document.getElementById("pushStaff");
 
   closeForm.addEventListener("click", (e) => {
-    e.preventDefault()
+    e.preventDefault();
     addWorkerForm.classList.add("hidden");
   });
 
   addNewWorker.addEventListener("click", (e) => {
-    e.preventDefault()
+    e.preventDefault();
     addWorkerForm.classList.remove("hidden");
   });
 
@@ -74,26 +74,38 @@ document.addEventListener("DOMContentLoaded", () => {
   saveExp.addEventListener("click", (e) => {
     e.preventDefault();
     const experiences = document.getElementById("experiences").value.trim();
-    if (!experiences) return;
-    saveExperiences.push(experiences);
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
+    if (!experiences || !startDate || !endDate) return;
+    saveExperiences.push({
+      startDate,
+      endDate,
+      experience: experiences,
+    });
 
     const expUnit = document.createElement("div");
-    expUnit.innerHTML += `<span
-                class="text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded"
-                >${experiences}</span
-              >`;
+    expUnit.innerHTML += `<p class="w-60 text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded">
+           From: ${startDate} To: ${endDate} <br> ${experiences}
+         </p>`;
     expDisplay.appendChild(expUnit);
   });
 
+  let workerIdCounter = 0;
+
   saveProfile.addEventListener("click", (e) => {
     e.preventDefault();
+
     const fullName = document.getElementById("full_name").value.trim();
     const role = document.getElementById("role").value.trim();
     const email = document.getElementById("email").value.trim();
     const phone = document.getElementById("phone").value.trim();
+
     if (!fullName || !email || !phone || !role) return;
 
+    workerIdCounter += 1;
+
     const newWorker = {
+      id: workerIdCounter,
       fullName,
       role,
       email,
@@ -101,31 +113,42 @@ document.addEventListener("DOMContentLoaded", () => {
       exp: [...saveExperiences],
     };
 
-    let allWorkers = JSON.parse(localStorage.getItem("allWorkers")) || [];
+    const allWorkers = getWorkers();
     allWorkers.push(newWorker);
     localStorage.setItem("allWorkers", JSON.stringify(allWorkers));
 
     const staffView = document.createElement("div");
-    staffView.innerHTML = `<div
-    class="border border-gray-400 w-full text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2"
->
-    <img
-        src="assets/1.png"
-        alt="img"
-        class="rounded-full  border-2 border-blue-500 overflow-hidden h-13 w-13"
-    />
-    <div class="text-left">
-        <h4 class="text-gray-900 text-xl font-semibold">${fullName}</h4>
-        <p class="text-gray-900">${role}</p>
-    </div>
-    <button
-        class="text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900"
-    >
+    staffView.innerHTML = `
+    <div class="border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2">
+      <img src="assets/1.png" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+      <div class="text-left">
+        <h4 class="text-gray-900 text-sm font-semibold">${fullName}</h4>
+<p class="text-sm text-gray-900">${role}</p>
+      </div>
+      <button class="text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900">
         Edit
-    </button>
-</div>`;
+      </button>
+    </div>
+  `;
 
     pushStaff.appendChild(staffView);
     saveExperiences = [];
+  });
+
+  function getWorkers() {
+    const stored = localStorage.getItem("allWorkers");
+    if (!stored) return [];
+    return JSON.parse(stored);
+  }
+
+  document.getElementById("saveExp").addEventListener("click", () => {
+    const from = document.getElementById("startDate").value;
+    const to = document.getElementById("endDate").value;
+    const description = document.getElementById("experiences").value.trim();
+
+    if (!from || !to || !description) return;
+
+    const experience = { from, to, description };
+    saveExperiences.push(experience);
   });
 });
