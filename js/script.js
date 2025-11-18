@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveExp = document.getElementById("saveExp");
   const expDisplay = document.getElementById("expDisplay");
   const pushStaff = document.getElementById("pushStaff");
+  const editWorkerForm = document.getElementById("editWorkerForm");
+  const closeEditForm = document.getElementById("closeEditForm");
+  const updateProfile = document.getElementById("updateProfile");
+  const deleteProfile = document.getElementById("deleteProfile");
 
   closeForm.addEventListener("click", (e) => {
     e.preventDefault();
@@ -151,14 +155,75 @@ document.addEventListener("DOMContentLoaded", () => {
                         <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
                         <p class="text-sm text-gray-900">${worker.role}</p>
                     </div>
-                    <button class="text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900">
+                    <button class="editBtn text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900" data-id="${worker.id}">
                         Edit
                     </button>
                 </div>
             `;
       pushStaff.appendChild(staffView);
     });
+    attachEditListeners();
   }
+
+  function attachEditListeners() {
+    document.querySelectorAll(".editBtn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const id = Number(e.target.closest(".editBtn").dataset.id);
+        openEditForm(id);
+      });
+    });
+  }
+
+  closeEditForm.addEventListener("click", (e) => {
+    e.preventDefault();
+    editWorkerForm.classList.add("hidden");
+  });
+
+  let currentEditId = null;
+
+  function openEditForm(id) {
+    const workers = getWorkers();
+    const worker = workers.find((w) => w.id === id);
+    if (!worker) return;
+    currentEditId = id;
+    document.getElementById("edit_id").value = id;
+    document.getElementById("edit_full_name").value = worker.fullName;
+    document.getElementById("edit_role").value = worker.role;
+    document.getElementById("edit_email").value = worker.email;
+    document.getElementById("edit_phone").value = worker.phone;
+    editWorkerForm.classList.remove("hidden");
+  }
+
+  updateProfile.addEventListener("click", (e) => {
+    e.preventDefault();
+    const fullName = document.getElementById("edit_full_name").value.trim();
+    const role = document.getElementById("edit_role").value.trim();
+    const email = document.getElementById("edit_email").value.trim();
+    const phone = document.getElementById("edit_phone").value.trim();
+    if (!fullName || !email || !phone || !role) return;
+    const workers = getWorkers();
+    const index = workers.findIndex((w) => w.id === currentEditId);
+    if (index === -1) return;
+    workers[index] = {
+      id: currentEditId,
+      fullName,
+      role,
+      email,
+      phone,
+      exp: workers[index].exp,
+    };
+    localStorage.setItem("allWorkers", JSON.stringify(workers));
+    renderWorkersFromStorage();
+    editWorkerForm.classList.add("hidden");
+  });
+
+  deleteProfile.addEventListener("click", () => {
+    let workers = getWorkers();
+    workers = workers.filter((w) => w.id !== currentEditId);
+    localStorage.setItem("allWorkers", JSON.stringify(workers));
+    renderWorkersFromStorage();
+    editWorkerForm.classList.add("hidden");
+  });
 
   renderWorkersFromStorage();
 });
