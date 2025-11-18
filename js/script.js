@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveProfile = document.getElementById("saveProfile");
   const saveExp = document.getElementById("saveExp");
   const expDisplay = document.getElementById("expDisplay");
-  // const side_bar = document.getElementById("side_bar");
   const pushStaff = document.getElementById("pushStaff");
 
   closeForm.addEventListener("click", (e) => {
@@ -81,8 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const expUnit = document.createElement("div");
     expUnit.innerHTML += `<p class="w-60 text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded">
-           From: ${startDate} To: ${endDate} <br> ${experiences}
-         </p>`;
+            From: ${startDate} To: ${endDate} <br> ${experiences}
+          </p>`;
     expDisplay.appendChild(expUnit);
   });
 
@@ -113,21 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
     allWorkers.push(newWorker);
     localStorage.setItem("allWorkers", JSON.stringify(allWorkers));
 
-    const staffView = document.createElement("div");
-    staffView.innerHTML = `
-    <div class="border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2">
-      <img src="assets/1.png" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
-      <div class="text-left">
-        <h4 class="text-gray-900 text-sm font-semibold">${fullName}</h4>
-<p class="text-sm text-gray-900">${role}</p>
-      </div>
-      <button class="text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900">
-        Edit
-      </button>
-    </div>
-  `;
+    renderWorkersFromStorage();
 
-    pushStaff.appendChild(staffView);
     saveExperiences = [];
   });
 
@@ -147,4 +133,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const experience = { from, to, description };
     saveExperiences.push(experience);
   });
+
+  function renderWorkersFromStorage() {
+    pushStaff.innerHTML = "";
+
+    const allWorkers = getWorkers();
+
+    allWorkers.forEach((worker) => {
+      const staffView = document.createElement("div");
+      staffView.innerHTML = `
+                <div 
+                    class="border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2"
+                    data-worker-id="${worker.id}"
+                >
+                    <img src="assets/1.png" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+                    <div class="text-left">
+                        <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
+                        <p class="text-sm text-gray-900">${worker.role}</p>
+                    </div>
+                    <button class="text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900">
+                        Edit
+                    </button>
+                </div>
+            `;
+      pushStaff.appendChild(staffView);
+    });
+  }
+
+  renderWorkersFromStorage();
 });
