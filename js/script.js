@@ -27,10 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
       regex: /^[\w\s\-]{2,60}$/i,
       error: "2-60 letters/spaces/dashes only.",
     },
-    role: {
-      regex: /^[\w\s\-]{2,60}$/i,
-      error: "2-60 letters/spaces/dashes only.",
-    },
     email: {
       regex: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
       error: "Please enter a valid email address.",
