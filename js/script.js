@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const staffView = document.createElement("div");
       staffView.innerHTML = `
                 <div 
-                    class="border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2"
+                    class="workerCard border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2 cursor-pointer"
                     data-worker-id="${worker.id}"
                     >
                     <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
@@ -202,13 +202,25 @@ document.addEventListener("DOMContentLoaded", () => {
       pushStaff.appendChild(staffView);
     });
     attachEditListeners();
+    attachWorkerCardListeners();
   }
 
   function attachEditListeners() {
     document.querySelectorAll(".editBtn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
+        e.stopPropagation();
         const id = Number(e.target.closest(".editBtn").dataset.id);
         openEditForm(id);
+      });
+    });
+  }
+
+  function attachWorkerCardListeners() {
+    document.querySelectorAll(".workerCard").forEach((card) => {
+      card.addEventListener("click", (e) => {
+        if (e.target.classList.contains("editBtn")) return;
+        const id = Number(card.dataset.workerId);
+        showWorkerPopup(id);
       });
     });
   }
@@ -231,6 +243,50 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("edit_email").value = worker.email;
     document.getElementById("edit_phone").value = worker.phone;
     editWorkerForm.classList.remove("hidden");
+  }
+
+  function showWorkerPopup(id) {
+    const workers = getWorkers();
+    const worker = workers.find((w) => w.id === id);
+    if (!worker) return;
+
+    const popup = document.createElement("div");
+    popup.id = "workerPopup";
+    popup.className = "fixed inset-0 flex items-center justify-center z-50";
+    popup.innerHTML = `
+      <div class="bg-white rounded-lg p-6 w-1/3 space-y-4 relative">
+        <button id="closeWorkerPopup" class="absolute top-2 right-2 bg-red-600 rounded-full w-7 h-7 text-white hover:scale-105">
+          ✕
+        </button>
+        <img src="${
+          worker.photo_upload
+        }" alt="img" class="rounded-full border-2 border-blue-500 h-20 w-20 mx-auto" />
+        <h3 class="text-xl font-semibold text-center">${worker.fullName}</h3>
+        <p class="text-center text-gray-800">${worker.role}</p>
+        <p class="text-center text-gray-800">${worker.email}</p>
+        <p class="text-center text-gray-800">${worker.phone}</p>
+        <div>
+          <h4 class="font-semibold border-b mb-2">Experiences</h4>
+          ${worker.exp
+            .map(
+              (exp) =>
+                `<div class="text-sm mb-2">
+                  <p><strong>${exp.company}</strong> - ${exp.role}</p>
+                  <p>${exp.startDate} to ${exp.endDate}</p>
+                  <p>${exp.experience}</p>
+                </div>`
+            )
+            .join("")}
+        </div>
+      </div>
+    `;
+    document.body.appendChild(popup);
+
+    document
+      .getElementById("closeWorkerPopup")
+      .addEventListener("click", () => {
+        popup.remove();
+      });
   }
 
   updateProfile.addEventListener("click", (e) => {
