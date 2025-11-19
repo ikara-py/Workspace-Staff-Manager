@@ -124,6 +124,17 @@ document.addEventListener("DOMContentLoaded", () => {
     renderWorkersFromStorage();
 
     saveExperiences = [];
+
+    expDisplay.innerHTML = "";
+    document.getElementById("full_name").value = "";
+    document.getElementById("role").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("photo_upload").value = "";
+    document.getElementById("experiences").value = "";
+    document.getElementById("startDate").value = "";
+    document.getElementById("endDate").value = "";
+    addWorkerForm.classList.add("hidden");
   });
 
   function getWorkers() {
@@ -234,14 +245,16 @@ document.addEventListener("DOMContentLoaded", () => {
     showWorkersContent.innerHTML = "";
     let workers = getWorkers();
     if (roomFilter) {
-      workers = workers.filter((w) => w.role === roomFilter);
+      workers = workers.filter(
+        (w) => w.role === roomFilter || w.role === "Managers"
+      );
     }
     workers.forEach((worker) => {
       const div = document.createElement("div");
       div.className =
         "border border-gray-300 rounded-lg p-4 flex items-center gap-4";
       div.innerHTML = `
-        <img src="assets/1.png" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+        <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
         <div class="text-left">
           <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
           <p class="text-sm text-gray-700">${worker.role}</p>
