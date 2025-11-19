@@ -80,7 +80,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const startDate = document.getElementById("startDate").value;
     const endDate = document.getElementById("endDate").value;
     const experiences = document.getElementById("experiences").value.trim();
-    if (!company || !role || !startDate || !endDate || !experiences) return;
+    const exp_role = document.getElementById("exp_role").value.trim();
+    if (
+      !company ||
+      !role ||
+      !startDate ||
+      !endDate ||
+      !experiences ||
+      !exp_role
+    )
+      return;
+    const idx = saveExperiences.length;
     saveExperiences.push({
       company,
       role,
@@ -88,12 +98,19 @@ document.addEventListener("DOMContentLoaded", () => {
       endDate,
       experience: experiences,
     });
-
     const expUnit = document.createElement("div");
-    expUnit.innerHTML += `<p class="w-60 text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded">
-            From: ${startDate} To: ${endDate} <br> ${company} - ${role} <br> ${experiences}
-          </p>`;
+    expUnit.innerHTML = `<p class="w-60 text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded relative">
+    From: ${startDate} To: ${endDate} <br> ${company} <br> ${exp_role}
+    <button data-del="${idx}" class="delExp absolute right-4 top-10 text-xs bg-red-500 text-white px-2 rounded-full ">✕</button>
+  </p>`;
     expDisplay.appendChild(expUnit);
+  });
+
+  expDisplay.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("delExp")) return;
+    const idx = Number(e.target.dataset.del);
+    saveExperiences.splice(idx, 1);
+    e.target.parentElement.remove();
   });
 
   let workerIdCounter = 0;
@@ -139,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("experiences").value = "";
     document.getElementById("startDate").value = "";
     document.getElementById("endDate").value = "";
+    document.getElementById("exp_role").value = "";
     addWorkerForm.classList.add("hidden");
   });
 
