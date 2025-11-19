@@ -151,9 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
       exp: [...saveExperiences],
     };
 
-    const allWorkers = getWorkers();
-    allWorkers.push(newWorker);
-    localStorage.setItem("allWorkers", JSON.stringify(allWorkers));
+    const workers = getWorkers();
+    workers.push(newWorker);
+    localStorage.setItem("allWorkers", JSON.stringify(workers));
 
     renderWorkersFromStorage();
 
@@ -179,23 +179,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return JSON.parse(stored);
   }
 
-  document.getElementById("saveExp").addEventListener("click", () => {
-    const from = document.getElementById("startDate").value;
-    const to = document.getElementById("endDate").value;
-    const description = document.getElementById("experiences").value.trim();
-
-    if (!from || !to || !description) return;
-
-    const experience = { from, to, description };
-    saveExperiences.push(experience);
-  });
-
   function renderWorkersFromStorage() {
     pushStaff.innerHTML = "";
 
-    const allWorkers = getWorkers();
+    const workers = getWorkers();
 
-    allWorkers.forEach((worker) => {
+    workers.forEach((worker) => {
       const staffView = document.createElement("div");
       staffView.innerHTML = `
                 <div 
