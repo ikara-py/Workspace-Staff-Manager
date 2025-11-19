@@ -139,31 +139,51 @@
         </h3>
         <div id="expDisplay" class="flex w-full gap-1 flex-wrap"></div>
         <div class="space-y-4">
-          <div class="experience-section">
-            <div class="date-group">
-              <div class="date-field from-date">
-                <label for="startDate">From:</label>
-                <input
-                  type="date"
-                  id="startDate"
-                  name="startDate"
-                  aria-label="Start date in month/day/year format"
-                  placeholder="mm/dd/yyyy"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Company</label
+            >
+            <input
+              type="text"
+              id="company"
+              name="company"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Role</label
+            >
+            <input
+              type="text"
+              id="role"
+              name="role"
+              required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg"
+            />
+          </div>
 
-              <div class="date-field to-date">
-                <label for="endDate">To:</label>
-                <input
-                  type="date"
-                  id="endDate"
-                  name="endDate"
-                  aria-label="End date in month/day/year format"
-                  placeholder="mm/dd/yyyy"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="startDate">From</label>
+              <input
+                type="date"
+                id="startDate"
+                name="startDate"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </div>
+            <div>
+              <label for="endDate">To</label>
+              <input
+                type="date"
+                id="endDate"
+                name="endDate"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md"
+              />
             </div>
           </div>
 
@@ -171,7 +191,7 @@
             <label
               for="experiences"
               class="block text-sm font-medium text-gray-700 mb-1"
-              >Experiences:</label
+              >Description:</label
             >
             <input
               type="text"

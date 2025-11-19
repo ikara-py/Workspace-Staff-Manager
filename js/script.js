@@ -75,11 +75,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   saveExp.addEventListener("click", (e) => {
     e.preventDefault();
-    const experiences = document.getElementById("experiences").value.trim();
+    const company = document.getElementById("company").value.trim();
+    const role = document.getElementById("role").value.trim();
     const startDate = document.getElementById("startDate").value;
     const endDate = document.getElementById("endDate").value;
-    if (!experiences || !startDate || !endDate) return;
+    const experiences = document.getElementById("experiences").value.trim();
+    if (!company || !role || !startDate || !endDate || !experiences) return;
     saveExperiences.push({
+      company,
+      role,
       startDate,
       endDate,
       experience: experiences,
@@ -87,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const expUnit = document.createElement("div");
     expUnit.innerHTML += `<p class="w-60 text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded">
-            From: ${startDate} To: ${endDate} <br> ${experiences}
+            From: ${startDate} To: ${endDate} <br> ${company} - ${role} <br> ${experiences}
           </p>`;
     expDisplay.appendChild(expUnit);
   });
@@ -131,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("email").value = "";
     document.getElementById("phone").value = "";
     document.getElementById("photo_upload").value = "";
+    document.getElementById("company").value = "";
     document.getElementById("experiences").value = "";
     document.getElementById("startDate").value = "";
     document.getElementById("endDate").value = "";
