@@ -113,7 +113,20 @@ document.addEventListener("DOMContentLoaded", () => {
     e.target.parentElement.remove();
   });
 
+  const allWorkers = getWorkers();
   let workerIdCounter = 0;
+
+  if (allWorkers.length > 0) {
+    workerIdCounter = allWorkers.reduce((max, worker) => {
+      if (worker.id > max) {
+        return worker.id;
+      } else {
+        return max;
+      }
+    }, 0);
+  } else {
+    workerIdCounter = 0;
+  }
 
   saveProfile.addEventListener("click", (e) => {
     e.preventDefault();
@@ -249,12 +262,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const workers = getWorkers();
     const worker = workers.find((w) => w.id === id);
     if (!worker) return;
+    if (document.getElementById("workerPopup")) return;
 
     const popup = document.createElement("div");
     popup.id = "workerPopup";
     popup.className = "fixed inset-0 flex items-center justify-center z-50";
     popup.innerHTML = `
-      <div class="bg-white rounded-lg p-6 w-1/3 space-y-4 relative">
+      <div class="bg-white rounded-lg p-6 w-1/3 space-y-4 relative shadow-2xl border border-gray-200">
         <button id="closeWorkerPopup" class="absolute top-2 right-2 bg-red-600 rounded-full w-7 h-7 text-white hover:scale-105">
           ✕
         </button>
@@ -306,6 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
       email,
       phone,
       exp: workers[index].exp,
+      photo_upload: workers[index].photo_upload,
     };
     localStorage.setItem("allWorkers", JSON.stringify(workers));
     renderWorkersFromStorage();
