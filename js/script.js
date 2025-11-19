@@ -244,34 +244,46 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderAvailableWorkers(roomFilter = null) {
     showWorkersContent.innerHTML = "";
     let workers = getWorkers();
+
     if (roomFilter) {
-      workers = workers.filter(
-        (w) => w.role === roomFilter || w.role === "Managers"
-      );
+      workers = workers.filter((w) => {
+        if (w.role === "Manager") return true;
+        if (roomFilter === "Receptionists" && w.role === "Receptionists")
+          return true;
+        if (roomFilter === "IT Technicians" && w.role === "IT Technicians")
+          return true;
+        if (roomFilter === "Security Agents" && w.role === "Security Agents")
+          return true;
+        if (roomFilter === "Cleaning" && w.role === "Cleaning") return true;
+        if (roomFilter === "Other roles" && w.role === "Other roles")
+          return true;
+        return false;
+      });
     }
+
     workers.forEach((worker) => {
       const div = document.createElement("div");
       div.className =
         "border border-gray-300 rounded-lg p-4 flex items-center gap-4";
       div.innerHTML = `
-        <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
-        <div class="text-left">
-          <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
-          <p class="text-sm text-gray-700">${worker.role}</p>
-        </div>
-        <button class="text-xs rounded absolute right-8 px-2 py-1 border border-blue-400 hover:bg-blue-400 hover:border-0 text-gray-900" data-id="${worker.id}">
-                        Assign
-                    </button>
-      `;
+      <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+      <div class="text-left">
+        <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
+        <p class="text-sm text-gray-700">${worker.role}</p>
+      </div>
+      <button class="text-xs rounded absolute right-8 px-2 py-1 border border-blue-400 hover:bg-blue-400 hover:border-0 text-gray-900" data-id="${worker.id}">
+        Assign
+      </button>
+    `;
       showWorkersContent.appendChild(div);
     });
   }
 
   const roomMap = {
-    conferenceBtn: "Managers",
-    receptionBtn: "Reception",
-    serverBtn: "Server Room",
-    securityBtn: "Security Room",
+    conferenceBtn: "Manager",
+    receptionBtn: "Receptionists",
+    serverBtn: "IT Technicians",
+    securityBtn: "Security Agents",
     staffBtn: "Other roles",
     vaultBtn: "Cleaning",
   };
