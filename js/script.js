@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeEditForm = document.getElementById("closeEditForm");
   const updateProfile = document.getElementById("updateProfile");
   const deleteProfile = document.getElementById("deleteProfile");
-
+  const photo_upload = document.getElementById("photo_upload").value;
   const showWorkersModal = document.getElementById("showWorkersModal");
   const closeShowWorkers = document.getElementById("closeShowWorkers");
   const showWorkersContent = document.getElementById("showWorkersContent");
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     class="border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2"
                     data-worker-id="${worker.id}"
                     >
-                    <img src="assets/1.png" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+                    <img src="${photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
                     <div class="text-left">
                         <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
                         <p class="text-sm text-gray-900">${worker.role}</p>
@@ -273,5 +273,22 @@ document.addEventListener("DOMContentLoaded", () => {
     showWorkersModal.classList.add("hidden");
   });
 
+  const rooms = [
+    "vault_room",
+    "security_room",
+    "server_room",
+    "reception_room",
+  ];
+
+  rooms.forEach((room) => {
+    const room_check = document.getElementById(room);
+    const red_room = ["bg-red-500/50", "rounded", "border-2", "border-red-800"];
+
+    if (room_check.childElementCount <= 2) {
+      room_check.classList.add(...red_room);
+    } else {
+      room_check.classList.remove(...red_room);
+    }
+  });
   renderWorkersFromStorage();
 });
