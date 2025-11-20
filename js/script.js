@@ -32,7 +32,15 @@ document.addEventListener("DOMContentLoaded", () => {
       regex: /^https?:\/\/.+\..+/i,
       error: "Must be a full URL (https://…).",
     },
+    edit_photo_upload: {
+      regex: /^https?:\/\/.+\..+/i,
+      error: "Must be a full URL (https://…).",
+    },
     full_name: {
+      regex: /^[\w\s\-]{2,60}$/i,
+      error: "2-60 letters/spaces/dashes only.",
+    },
+    edit_full_name: {
       regex: /^[\w\s\-]{2,60}$/i,
       error: "2-60 letters/spaces/dashes only.",
     },
@@ -40,7 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
       regex: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
       error: "Please enter a valid email address.",
     },
+    edit_email: {
+      regex: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
+      error: "Please enter a valid email address.",
+    },
     phone: {
+      regex: /^(06|07|05)\d{8}$/,
+      error: "Phone number must be 10 digits and start with 05, 06, or 07.",
+    },
+    edit_phone: {
       regex: /^(06|07|05)\d{8}$/,
       error: "Phone number must be 10 digits and start with 05, 06, or 07.",
     },
@@ -317,7 +333,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const photo_upload = document
       .getElementById("edit_photo_upload")
       .value.trim();
-    if (!fullName || !email || !phone || !role) return;
+
+    const validName = validationRules.edit_full_name.regex.test(fullName);
+    const validEmail = validationRules.edit_email.regex.test(email);
+    const validPhone = validationRules.edit_phone.regex.test(phone);
+    const validPhoto =
+      photo_upload === "" ||
+      validationRules.edit_photo_upload.regex.test(photo_upload);
+
+    if (!validName || !validEmail || !validPhone || !validPhoto || !role) {
+      showError(
+        "edit_full_name",
+        validName,
+        validationRules.edit_full_name.error
+      );
+      showError("edit_email", validEmail, validationRules.edit_email.error);
+      showError("edit_phone", validPhone, validationRules.edit_phone.error);
+      if (photo_upload !== "") {
+        showError(
+          "edit_photo_upload",
+          validPhoto,
+          validationRules.edit_photo_upload.error
+        );
+      }
+      return;
+    }
+
     const workers = getWorkers();
     const index = workers.findIndex((w) => w.id === currentEditId);
     if (index === -1) return;
