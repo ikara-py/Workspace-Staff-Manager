@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const showWorkersModal = document.getElementById("showWorkersModal");
   const closeShowWorkers = document.getElementById("closeShowWorkers");
   const showWorkersContent = document.getElementById("showWorkersContent");
+  const assigned = document.querySelectorAll(".assigned");
 
   closeForm.addEventListener("click", (e) => {
     e.preventDefault();
@@ -149,6 +150,8 @@ document.addEventListener("DOMContentLoaded", () => {
       email,
       phone,
       exp: [...saveExperiences],
+      assign: "false",
+      room: null,
     };
 
     const workers = getWorkers();
@@ -185,23 +188,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const workers = getWorkers();
 
     workers.forEach((worker) => {
-      const staffView = document.createElement("div");
-      staffView.innerHTML = `
-                <div 
-                    class="workerCard border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2 cursor-pointer"
-                    data-worker-id="${worker.id}"
-                    >
-                    <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
-                    <div class="text-left">
-                        <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
-                        <p class="text-sm text-gray-900">${worker.role}</p>
-                    </div>
-                    <button class="editBtn text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900" data-id="${worker.id}">
-                        Edit
-                    </button>
-                </div>
-            `;
-      pushStaff.appendChild(staffView);
+      if (worker.assign === "false") {
+        const staffView = document.createElement("div");
+        staffView.innerHTML = `
+                  <div 
+                      class="workerCard border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2 cursor-pointer"
+                      data-worker-id="${worker.id}"
+                      >
+                      <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+                      <div class="text-left">
+                          <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
+                          <p class="text-sm text-gray-900">${worker.role}</p>
+                      </div>
+                      <button class="editBtn text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900" data-id="${worker.id}">
+                          Edit
+                      </button>
+                  </div>
+              `;
+        pushStaff.appendChild(staffView);
+      }
     });
     attachEditListeners();
     attachWorkerCardListeners();
@@ -310,6 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
       phone,
       exp: workers[index].exp,
       photo_upload: workers[index].photo_upload,
+      assigned: false,
     };
     localStorage.setItem("allWorkers", JSON.stringify(workers));
     renderWorkersFromStorage();
@@ -345,20 +351,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     workers.forEach((worker) => {
-      const div = document.createElement("div");
-      div.className =
-        "border border-gray-300 rounded-lg p-4 flex items-center gap-4";
-      div.innerHTML = `
-      <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
-      <div class="text-left">
-        <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
-        <p class="text-sm text-gray-700">${worker.role}</p>
-      </div>
-      <button class="text-xs rounded absolute right-8 px-2 py-1 border border-blue-400 hover:bg-blue-400 hover:border-0 text-gray-900" data-id="${worker.id}">
-        Assign
-      </button>
-    `;
-      showWorkersContent.appendChild(div);
+      if (worker.assign === "false") {
+        const div = document.createElement("div");
+        div.className =
+          "border border-gray-300 rounded-lg p-4 flex items-center gap-4";
+        div.innerHTML = `
+        <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+        <div class="text-left">
+          <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
+          <p class="text-sm text-gray-700">${worker.role}</p>
+        </div>
+        <button class="assigned text-xs rounded absolute right-8 px-2 py-1 border border-blue-400 hover:bg-blue-400 hover:border-0 text-gray-900" data-id="${worker.id}">
+          Assign
+        </button>
+      `;
+        showWorkersContent.appendChild(div);
+      }
     });
   }
 
