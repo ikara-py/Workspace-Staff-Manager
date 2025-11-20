@@ -464,7 +464,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "border-2",
         "border-red-800",
       ];
-      if (room_check.childElementCount <= 2) {
+      if (room_check.querySelectorAll(".workerCard").length <= 0) {
         room_check.classList.add(...red_room);
       } else {
         room_check.classList.remove(...red_room);
@@ -475,21 +475,29 @@ document.addEventListener("DOMContentLoaded", () => {
   function spawnWorkerInRoom(worker, roomId) {
     const roomDiv = document.getElementById(roomId);
     if (roomDiv) {
+      let list = roomDiv.querySelector(".worker-list");
+      if (!list) {
+        list = document.createElement("div");
+        list.className =
+          "worker-list absolute bottom-14 left-1/2 transform -translate-x-1/2 w-full max-h-40 overflow-y-auto flex flex-col items-center gap-1 z-20 px-2 scrollbar-thin";
+        roomDiv.appendChild(list);
+      }
+
       const card = document.createElement("div");
       card.className =
-        "workerCard bg-white border border-gray-400 w-40 text-center flex px-3 py-2 gap-2 items-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 rounded-xl shadow-lg cursor-pointer";
+        "workerCard bg-white border border-gray-400 w-40 text-center flex px-3 py-1 items-center shrink-0 relative rounded-xl cursor-pointer shadow-md mb-1";
       card.dataset.workerId = worker.id;
 
       card.innerHTML = `
-        <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-5 w-5" />
-        <div class="text-left">
-          <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
-          <p class="text-sm text-gray-900">${worker.role}</p>
+        <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-9 w-9 object-cover" />
+        <div class="text-left ml-2 overflow-hidden"> 
+          <h4 class="text-gray-900 text-xs font-semibold truncate">${worker.fullName}</h4>
+          <p class="text-[10px] text-gray-600 truncate">${worker.role}</p>
         </div>
-        <button class="unassignBtn absolute top-5 right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-sm hover:scale-110 transition-transform">✕</button>
+        <button class="unassignBtn absolute top-1 right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center hover:bg-red-700">✕</button>
       `;
 
-      roomDiv.appendChild(card);
+      list.appendChild(card);
 
       card.addEventListener("click", (e) => {
         if (e.target.classList.contains("unassignBtn")) return;
