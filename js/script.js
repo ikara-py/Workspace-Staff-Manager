@@ -257,6 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("edit_role").value = worker.role;
     document.getElementById("edit_email").value = worker.email;
     document.getElementById("edit_phone").value = worker.phone;
+    document.getElementById("edit_photo_upload").value = worker.photo_upload;
     editWorkerForm.classList.remove("hidden");
   }
 
@@ -311,6 +312,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const role = document.getElementById("edit_role").value.trim();
     const email = document.getElementById("edit_email").value.trim();
     const phone = document.getElementById("edit_phone").value.trim();
+    const photo_upload = document
+      .getElementById("edit_photo_upload")
+      .value.trim();
     if (!fullName || !email || !phone || !role) return;
     const workers = getWorkers();
     const index = workers.findIndex((w) => w.id === currentEditId);
@@ -322,8 +326,9 @@ document.addEventListener("DOMContentLoaded", () => {
       email,
       phone,
       exp: workers[index].exp,
-      photo_upload: workers[index].photo_upload,
-      assigned: false,
+      photo_upload: photo_upload || workers[index].photo_upload,
+      assign: workers[index].assign,
+      room: workers[index].room,
     };
     localStorage.setItem("allWorkers", JSON.stringify(workers));
     renderWorkersFromStorage();
