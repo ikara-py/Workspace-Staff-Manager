@@ -420,5 +420,41 @@ document.addEventListener("DOMContentLoaded", () => {
       room_check.classList.remove(...red_room);
     }
   });
+
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("assigned")) {
+      const id = Number(e.target.dataset.id);
+      const workers = getWorkers();
+      const index = workers.findIndex((w) => w.id === id);
+      workers[index].assign = "true";
+      localStorage.setItem("allWorkers", JSON.stringify(workers));
+      renderAvailableWorkers();
+
+      const worker = workers[index];
+      const roomKey = Object.keys(roomMap).find(
+        (k) => roomMap[k] === worker.role
+      );
+      if (roomKey) {
+        const roomDiv = document.getElementById(
+          roomKey.replace("Btn", "_room")
+        );
+        if (roomDiv) {
+          const card = document.createElement("div");
+          card.className =
+            "workerCard border border-gray-400 w-65 overflow-y-scroll bg-white text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2 cursor-pointer";
+          card.dataset.workerId = worker.id;
+          card.innerHTML = `
+            <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+            <div class="text-left">
+              <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
+              <p class="text-sm text-gray-900">${worker.role}</p>
+            </div>
+          `;
+          roomDiv.appendChild(card);
+          card.addEventListener("click", () => showWorkerPopup(worker.id));
+        }
+      }
+    }
+  });
   renderWorkersFromStorage();
 });
