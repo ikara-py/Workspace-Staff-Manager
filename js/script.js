@@ -89,8 +89,15 @@ document.addEventListener("DOMContentLoaded", () => {
       !endDate ||
       !experiences ||
       !exp_role
-    )
+    ) {
       return;
+    }
+    const startObj = new Date(startDate);
+    const endObj = new Date(endDate);
+    if (startObj > endObj) {
+      alert("Date is not right");
+      return;
+    }
     const idx = saveExperiences.length;
     saveExperiences.push({
       company,
@@ -99,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       endDate,
       experience: experiences,
     });
+
     const expUnit = document.createElement("div");
     expUnit.innerHTML = `<p class="w-60 text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded relative">
     From: ${startDate} To: ${endDate} <br> ${company} <br> ${exp_role}
