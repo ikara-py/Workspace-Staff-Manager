@@ -409,17 +409,23 @@ document.addEventListener("DOMContentLoaded", () => {
     "server_room",
     "reception_room",
   ];
+  function checkRoomStatus() {
+    rooms.forEach((room) => {
+      const room_check = document.getElementById(room);
+      const red_room = [
+        "bg-red-500/50",
+        "rounded",
+        "border-2",
+        "border-red-800",
+      ];
 
-  rooms.forEach((room) => {
-    const room_check = document.getElementById(room);
-    const red_room = ["bg-red-500/50", "rounded", "border-2", "border-red-800"];
-
-    if (room_check.childElementCount <= 2) {
-      room_check.classList.add(...red_room);
-    } else {
-      room_check.classList.remove(...red_room);
-    }
-  });
+      if (room_check.childElementCount <= 2) {
+        room_check.classList.add(...red_room);
+      } else {
+        room_check.classList.remove(...red_room);
+      }
+    });
+  }
 
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("assigned")) {
@@ -441,20 +447,43 @@ document.addEventListener("DOMContentLoaded", () => {
         if (roomDiv) {
           const card = document.createElement("div");
           card.className =
-            "workerCard border border-gray-400 w-65 overflow-y-scroll bg-white text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2 cursor-pointer";
+            "workerCard bg-white border border-gray-400 w-40 text-center flex px-3 py-2 gap-2 items-center relative rounded-xl my-2 cursor-pointer";
           card.dataset.workerId = worker.id;
+
           card.innerHTML = `
-            <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
-            <div class="text-left">
-              <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
-              <p class="text-sm text-gray-900">${worker.role}</p>
-            </div>
-          `;
+      <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-5 w-5" />
+      <div class="text-left">
+        <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
+        <p class="text-sm text-gray-900">${worker.role}</p>
+      </div>
+      <button class="unassignBtn absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">✕</button>
+    `;
+
           roomDiv.appendChild(card);
-          card.addEventListener("click", () => showWorkerPopup(worker.id));
+
+          card.addEventListener("click", (e) => {
+            if (e.target.classList.contains("unassignBtn")) return;
+            showWorkerPopup(worker.id);
+          });
+
+          card.querySelector(".unassignBtn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            const workers = getWorkers();
+            const idx = workers.findIndex((w) => w.id === worker.id);
+            if (idx !== -1) {
+              workers[idx].assign = "false";
+              localStorage.setItem("allWorkers", JSON.stringify(workers));
+            }
+            card.remove();
+            renderWorkersFromStorage();
+            checkRoomStatus();
+          });
+
+          checkRoomStatus();
         }
       }
     }
   });
+  checkRoomStatus();
   renderWorkersFromStorage();
 });
