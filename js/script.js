@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
+  /* * ===============================================================
+   * DOM ELEMENT SELECTION
+   * ===============================================================
+   * Here we are grabbing all the necessary HTML elements by their IDs.
+   * This includes buttons for adding/editing workers, the form modals,
+   * the container for displaying the staff list, and the modals for
+   * assigning workers to rooms.
+   */
   const addNewWorker = document.getElementById("addNewWorker");
   const closeForm = document.getElementById("closeForm");
   const addWorkerForm = document.getElementById("addWorkerForm");
@@ -14,8 +22,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeShowWorkers = document.getElementById("closeShowWorkers");
   const showWorkersContent = document.getElementById("showWorkersContent");
 
+  // Keeps track of which room is currently selected for assignment
   let currentTargetRoom = null;
 
+  /* * ===============================================================
+   * MODAL VISIBILITY HANDLERS
+   * ===============================================================
+   * These event listeners simply toggle the visibility of the "Add New Worker"
+   * form. We use CSS classes (classList) to hide or show the form.
+   */
   closeForm.addEventListener("click", (e) => {
     e.preventDefault();
     addWorkerForm.classList.add("hidden");
@@ -26,6 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
     addWorkerForm.classList.remove("hidden");
   });
 
+  /* * ===============================================================
+   * INPUT VALIDATION LOGIC
+   * ===============================================================
+   * This object defines the Regex rules for validating user inputs.
+   * It covers URL validation for photos, alphanumeric checks for names,
+   * email format verification, and specific phone number formats.
+   */
   const validationRules = {
     photo_upload: {
       regex: /^https?:\/\/.+\..+/i,
@@ -65,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
+  // Helper function to display or hide error messages under input fields
   function showError(inputId, ok, msg) {
     const errSpan = document.getElementById("err_" + inputId);
     if (ok) {
@@ -76,8 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Attach 'blur' event listeners to all inputs to trigger validation when the user leaves the field
   const inputsToCheck = document.querySelectorAll("input[id]");
-
   inputsToCheck.forEach((input) => {
     const fieldName = input.id;
     if (validationRules[fieldName]) {
@@ -89,6 +112,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  /* * ===============================================================
+   * EXPERIENCE SECTION MANAGEMENT
+   * ===============================================================
+   * This section handles the temporary storage of job experiences inside the "Add" form.
+   * When the user clicks "save experiences", we validate the date range and push the data
+   * to the 'saveExperiences' array, rendering a small visual tag for the user to see.
+   */
   let saveExperiences = [];
 
   saveExp.addEventListener("click", (e) => {
@@ -99,6 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const endDate = document.getElementById("endDate").value;
     const experiences = document.getElementById("experiences").value.trim();
     const exp_role = document.getElementById("exp_role").value.trim();
+
+    // Ensure all fields are filled
     if (
       !company ||
       !role ||
@@ -109,12 +141,15 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       return;
     }
+
+    // Validate that the start date is not after the end date
     const startObj = new Date(startDate);
     const endObj = new Date(endDate);
     if (startObj > endObj) {
       alert("Date is not right");
       return;
     }
+
     const idx = saveExperiences.length;
     saveExperiences.push({
       company,
@@ -124,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
       experience: experiences,
     });
 
+    // Render a small tag representing the added experience
     const expUnit = document.createElement("div");
     expUnit.innerHTML = `<p class="w-60 text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded relative">
       From: ${startDate} To: ${endDate} <br> ${company} <br> ${exp_role}
@@ -132,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     expDisplay.appendChild(expUnit);
   });
 
+  // Handler for removing an experience item from the list before saving the profile
   expDisplay.addEventListener("click", (e) => {
     if (!e.target.classList.contains("delExp")) return;
     const idx = Number(e.target.dataset.del);
@@ -139,6 +176,12 @@ document.addEventListener("DOMContentLoaded", () => {
     e.target.parentElement.remove();
   });
 
+  /* * ===============================================================
+   * WORKER ID MANAGEMENT
+   * ===============================================================
+   * Calculates the next available ID by finding the highest existing ID
+   * in the list of workers to ensure uniqueness.
+   */
   const allWorkers = getWorkers();
   let workerIdCounter = 0;
 
@@ -154,6 +197,13 @@ document.addEventListener("DOMContentLoaded", () => {
     workerIdCounter = 0;
   }
 
+  /* * ===============================================================
+   * SAVE NEW PROFILE
+   * ===============================================================
+   * This handler processes the main form submission. It collects all data,
+   * creates a new worker object, saves it to LocalStorage, clears the form inputs,
+   * and refreshes the sidebar list.
+   */
   saveProfile.addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -185,8 +235,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderWorkersFromStorage();
 
+    // Reset form and temp experience array
     saveExperiences = [];
-
     expDisplay.innerHTML = "";
     document.getElementById("full_name").value = "";
     document.getElementById("role").value = "";
@@ -201,12 +251,20 @@ document.addEventListener("DOMContentLoaded", () => {
     addWorkerForm.classList.add("hidden");
   });
 
+  // Utility function to retrieve the workers array from LocalStorage
   function getWorkers() {
     const stored = localStorage.getItem("allWorkers");
     if (!stored) return [];
     return JSON.parse(stored);
   }
 
+  /* * ===============================================================
+   * RENDERING WORKERS (SIDEBAR)
+   * ===============================================================
+   * This function clears the sidebar and repopulates it with workers
+   * who are currently unassigned (assign === "false"). It creates the HTML
+   * structure for the worker card and attaches event listeners for viewing/editing.
+   */
   function renderWorkersFromStorage() {
     pushStaff.innerHTML = "";
 
@@ -237,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
     attachWorkerCardListeners();
   }
 
+  // Listener for the "Edit" button on sidebar cards
   function attachEditListeners() {
     document.querySelectorAll(".editBtn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
@@ -247,6 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Listener for clicking the card itself to show a detailed popup
   function attachWorkerCardListeners() {
     document.querySelectorAll(".workerCard").forEach((card) => {
       card.addEventListener("click", (e) => {
@@ -264,6 +324,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentEditId = null;
 
+  /* * ===============================================================
+   * EDIT FORM LOGIC
+   * ===============================================================
+   * Finds a worker by ID and populates the Edit Form inputs with their existing data.
+   */
   function openEditForm(id) {
     const workers = getWorkers();
     const worker = workers.find((w) => w.id === id);
@@ -278,6 +343,12 @@ document.addEventListener("DOMContentLoaded", () => {
     editWorkerForm.classList.remove("hidden");
   }
 
+  /* * ===============================================================
+   * WORKER DETAILS POPUP
+   * ===============================================================
+   * Generates a temporary modal on the fly to show full details of a worker,
+   * including their experience history.
+   */
   function showWorkerPopup(id) {
     const workers = getWorkers();
     const worker = workers.find((w) => w.id === id);
@@ -323,6 +394,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
+  /* * ===============================================================
+   * UPDATE & DELETE ACTIONS
+   * ===============================================================
+   * 'updateProfile' validates the edit form and saves changes to LocalStorage.
+   * 'deleteProfile' removes the worker completely from the array and LocalStorage.
+   */
   updateProfile.addEventListener("click", (e) => {
     e.preventDefault();
     const fullName = document.getElementById("edit_full_name").value.trim();
@@ -361,6 +438,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const workers = getWorkers();
     const index = workers.findIndex((w) => w.id === currentEditId);
     if (index === -1) return;
+
+    // Update only the changed fields
     workers[index] = {
       id: currentEditId,
       fullName,
@@ -385,6 +464,12 @@ document.addEventListener("DOMContentLoaded", () => {
     editWorkerForm.classList.add("hidden");
   });
 
+  /* * ===============================================================
+   * ROOM ASSIGNMENT LOGIC
+   * ===============================================================
+   * 'renderAvailableWorkers' displays a list of workers suitable for a specific room.
+   * It filters by role or allows Managers to go anywhere.
+   */
   function renderAvailableWorkers(roomFilter = null) {
     showWorkersContent.innerHTML = "";
     let workers = getWorkers();
@@ -425,6 +510,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Mapping button IDs to specific Job Roles
   const roomMap = {
     conferenceBtn: "Manager",
     receptionBtn: "Receptionists",
@@ -434,6 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
     vaultBtn: "Cleaning",
   };
 
+  // Listeners for the "+" buttons on the map
   Object.keys(roomMap).forEach((id) => {
     document.getElementById(id).addEventListener("click", () => {
       currentTargetRoom = id.replace("Btn", "_room");
@@ -447,12 +534,19 @@ document.addEventListener("DOMContentLoaded", () => {
     currentTargetRoom = null;
   });
 
+  /* * ===============================================================
+   * VISUAL ROOM STATUS & WORKER SPAWNING
+   * ===============================================================
+   * 'checkRoomStatus' adds a red border to rooms that are currently empty.
+   * 'spawnWorkerInRoom' creates a small visual card for the worker inside the room div on the map.
+   */
   const rooms = [
     "vault_room",
     "security_room",
     "server_room",
     "reception_room",
   ];
+
   function checkRoomStatus() {
     rooms.forEach((room) => {
       const room_check = document.getElementById(room);
@@ -474,6 +568,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function spawnWorkerInRoom(worker, roomId) {
     const roomDiv = document.getElementById(roomId);
     if (roomDiv) {
+      // Create a container for workers if it doesn't exist yet
       let list = roomDiv.querySelector(".worker-list");
       if (!list) {
         list = document.createElement("div");
@@ -498,11 +593,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       list.appendChild(card);
 
+      // View details on click
       card.addEventListener("click", (e) => {
         if (e.target.classList.contains("unassignBtn")) return;
         showWorkerPopup(worker.id);
       });
 
+      // Unassign logic (click the red 'X')
       card.querySelector(".unassignBtn").addEventListener("click", (e) => {
         e.stopPropagation();
         const workers = getWorkers();
@@ -513,7 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("allWorkers", JSON.stringify(workers));
         }
         card.remove();
-        renderWorkersFromStorage();
+        renderWorkersFromStorage(); // Return to sidebar
         checkRoomStatus();
       });
 
@@ -521,14 +618,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Global listener for the "Assign" button inside the modal
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("assigned")) {
       const id = Number(e.target.dataset.id);
       const workers = getWorkers();
       const index = workers.findIndex((w) => w.id === id);
+
+      // Update worker status
       workers[index].assign = "true";
       workers[index].room = currentTargetRoom;
       localStorage.setItem("allWorkers", JSON.stringify(workers));
+
+      // Refresh the assignment modal list
       renderAvailableWorkers(
         Object.keys(roomMap).find(
           (k) =>
@@ -539,11 +641,13 @@ document.addEventListener("DOMContentLoaded", () => {
           : "Manager"
       );
 
+      // Visually place the worker
       spawnWorkerInRoom(workers[index], currentTargetRoom);
       renderWorkersFromStorage();
     }
   });
 
+  // On page load, place previously assigned workers back into their rooms
   function initAssignedWorkers() {
     const workers = getWorkers();
     workers.forEach((w) => {
@@ -553,6 +657,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Initial calls
   checkRoomStatus();
   renderWorkersFromStorage();
   initAssignedWorkers();
