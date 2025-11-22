@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const showWorkersModal = document.getElementById("showWorkersModal");
   const closeShowWorkers = document.getElementById("closeShowWorkers");
   const showWorkersContent = document.getElementById("showWorkersContent");
-  const assigned = document.querySelectorAll(".assigned");
 
   let currentTargetRoom = null;
 
