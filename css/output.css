@@ -26,6 +26,7 @@
     --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-300: oklch(87.2% 0.01 258.338);
     --color-gray-400: oklch(70.7% 0.022 261.325);
+    --color-gray-600: oklch(44.6% 0.03 256.802);
     --color-gray-700: oklch(37.3% 0.034 259.733);
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-gray-900: oklch(21% 0.034 264.665);
@@ -47,12 +48,9 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --leading-tight: 1.25;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
-    --default-transition-duration: 150ms;
-    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -218,6 +216,9 @@
   .inset-0 {
     inset: calc(var(--spacing) * 0);
   }
+  .top-1 {
+    top: calc(var(--spacing) * 1);
+  }
   .top-2 {
     top: calc(var(--spacing) * 2);
   }
@@ -226,6 +227,9 @@
   }
   .top-10 {
     top: calc(var(--spacing) * 10);
+  }
+  .right-1 {
+    right: calc(var(--spacing) * 1);
   }
   .right-2 {
     right: calc(var(--spacing) * 2);
@@ -245,11 +249,20 @@
   .bottom-4 {
     bottom: calc(var(--spacing) * 4);
   }
+  .bottom-14 {
+    bottom: calc(var(--spacing) * 14);
+  }
+  .left-1\/2 {
+    left: calc(1/2 * 100%);
+  }
   .z-0 {
     z-index: 0;
   }
   .z-10 {
     z-index: 10;
+  }
+  .z-20 {
+    z-index: 20;
   }
   .z-50 {
     z-index: 50;
@@ -278,6 +291,9 @@
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
+  .ml-2 {
+    margin-left: calc(var(--spacing) * 2);
+  }
   .block {
     display: block;
   }
@@ -290,8 +306,14 @@
   .hidden {
     display: none;
   }
+  .h-4 {
+    height: calc(var(--spacing) * 4);
+  }
   .h-7 {
     height: calc(var(--spacing) * 7);
+  }
+  .h-9 {
+    height: calc(var(--spacing) * 9);
   }
   .h-13 {
     height: calc(var(--spacing) * 13);
@@ -305,14 +327,23 @@
   .h-screen {
     height: 100vh;
   }
+  .max-h-40 {
+    max-height: calc(var(--spacing) * 40);
+  }
   .w-1\/2 {
     width: calc(1/2 * 100%);
   }
   .w-1\/3 {
     width: calc(1/3 * 100%);
   }
+  .w-4 {
+    width: calc(var(--spacing) * 4);
+  }
   .w-7 {
     width: calc(var(--spacing) * 7);
+  }
+  .w-9 {
+    width: calc(var(--spacing) * 9);
   }
   .w-11\/12 {
     width: calc(11/12 * 100%);
@@ -322,6 +353,9 @@
   }
   .w-20 {
     width: calc(var(--spacing) * 20);
+  }
+  .w-40 {
+    width: calc(var(--spacing) * 40);
   }
   .w-60 {
     width: calc(var(--spacing) * 60);
@@ -337,6 +371,16 @@
   }
   .max-w-3xl {
     max-width: var(--container-3xl);
+  }
+  .shrink-0 {
+    flex-shrink: 0;
+  }
+  .-translate-x-1\/2 {
+    --tw-translate-x: calc(calc(1/2 * 100%) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .transform {
+    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
   }
   .cursor-pointer {
     cursor: pointer;
@@ -387,6 +431,14 @@
       margin-block-start: calc(calc(var(--spacing) * 6) * var(--tw-space-y-reverse));
       margin-block-end: calc(calc(var(--spacing) * 6) * calc(1 - var(--tw-space-y-reverse)));
     }
+  }
+  .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .overflow-hidden {
+    overflow: hidden;
   }
   .overflow-scroll {
     overflow: scroll;
@@ -482,6 +534,9 @@
   .bg-white {
     background-color: var(--color-white);
   }
+  .object-cover {
+    object-fit: cover;
+  }
   .object-fill {
     object-fit: fill;
   }
@@ -538,6 +593,9 @@
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
+  .text-\[10px\] {
+    font-size: 10px;
+  }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
@@ -560,6 +618,9 @@
   .text-blue-600 {
     color: var(--color-blue-600);
   }
+  .text-gray-600 {
+    color: var(--color-gray-600);
+  }
   .text-gray-700 {
     color: var(--color-gray-700);
   }
@@ -577,6 +638,10 @@
   }
   .shadow-2xl {
     --tw-shadow: 0 25px 50px -12px var(--tw-shadow-color, rgb(0 0 0 / 0.25));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-md {
+    --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .shadow-xl {
@@ -697,6 +762,77 @@ form, .showWorkers {
 }
 .vault_room {
   grid-area: vault_room;
+}
+@media (max-width: 1024px) {
+  #rooms img {
+    display: none;
+  }
+  #rooms {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: initial;
+    gap: 1rem;
+    height: auto;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+  .conference_room, .reception_room, .server_room, .security_room, .staff_room, .vault_room {
+    grid-area: auto !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    min-height: 200px;
+    background-color: #f9fafb;
+  }
+}
+@media (max-width: 768px) {
+  #main_body {
+    flex-direction: column;
+  }
+  #side_bar {
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    overflow-y: auto;
+  }
+  #rooms {
+    grid-template-columns: 1fr;
+  }
+}
+@property --tw-translate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-rotate-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-y {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-z {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-y {
+  syntax: "*";
+  inherits: false;
 }
 @property --tw-space-y-reverse {
   syntax: "*";
@@ -857,6 +993,14 @@ form, .showWorkers {
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
+      --tw-translate-x: 0;
+      --tw-translate-y: 0;
+      --tw-translate-z: 0;
+      --tw-rotate-x: initial;
+      --tw-rotate-y: initial;
+      --tw-rotate-z: initial;
+      --tw-skew-x: initial;
+      --tw-skew-y: initial;
       --tw-space-y-reverse: 0;
       --tw-border-style: solid;
       --tw-font-weight: initial;

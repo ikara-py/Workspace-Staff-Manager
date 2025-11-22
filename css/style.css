@@ -54,3 +54,45 @@ form,
 .vault_room {
   grid-area: vault_room;
 }
+
+@media (max-width: 1024px) {
+  #rooms img {
+    display: none;
+  }
+  #rooms {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: initial;
+    gap: 1rem;
+    height: auto;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+  .conference_room,
+  .reception_room,
+  .server_room,
+  .security_room,
+  .staff_room,
+  .vault_room {
+    grid-area: auto !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    min-height: 200px;
+    background-color: #f9fafb;
+  }
+}
+@media (max-width: 768px) {
+  #main_body {
+    flex-direction: column;
+  }
+  #side_bar {
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    overflow-y: auto;
+  }
+  #rooms {
+    grid-template-columns: 1fr;
+  }
+}

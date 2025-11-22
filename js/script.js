@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const showWorkersModal = document.getElementById("showWorkersModal");
   const closeShowWorkers = document.getElementById("closeShowWorkers");
   const showWorkersContent = document.getElementById("showWorkersContent");
-  const assigned = document.querySelectorAll(".assigned");
+
+  let currentTargetRoom = null;
 
   closeForm.addEventListener("click", (e) => {
     e.preventDefault();
@@ -30,7 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
       regex: /^https?:\/\/.+\..+/i,
       error: "Must be a full URL (https://…).",
     },
+    edit_photo_upload: {
+      regex: /^https?:\/\/.+\..+/i,
+      error: "Must be a full URL (https://…).",
+    },
     full_name: {
+      regex: /^[\w\s\-]{2,60}$/i,
+      error: "2-60 letters/spaces/dashes only.",
+    },
+    edit_full_name: {
       regex: /^[\w\s\-]{2,60}$/i,
       error: "2-60 letters/spaces/dashes only.",
     },
@@ -38,7 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {
       regex: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
       error: "Please enter a valid email address.",
     },
+    edit_email: {
+      regex: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
+      error: "Please enter a valid email address.",
+    },
     phone: {
+      regex: /^(06|07|05)\d{8}$/,
+      error: "Phone number must be 10 digits and start with 05, 06, or 07.",
+    },
+    edit_phone: {
       regex: /^(06|07|05)\d{8}$/,
       error: "Phone number must be 10 digits and start with 05, 06, or 07.",
     },
@@ -109,9 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const expUnit = document.createElement("div");
     expUnit.innerHTML = `<p class="w-60 text-sm px-2 py-1 bg-blue-200 border-l-2 border-blue-500 rounded relative">
-    From: ${startDate} To: ${endDate} <br> ${company} <br> ${exp_role}
-    <button data-del="${idx}" class="delExp absolute right-4 top-10 text-xs bg-red-500 text-white px-2 rounded-full ">✕</button>
-  </p>`;
+      From: ${startDate} To: ${endDate} <br> ${company} <br> ${exp_role}
+      <button data-del="${idx}" class="delExp absolute right-4 top-10 text-xs bg-red-500 text-white px-2 rounded-full ">✕</button>
+    </p>`;
     expDisplay.appendChild(expUnit);
   });
 
@@ -199,20 +216,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (worker.assign === "false") {
         const staffView = document.createElement("div");
         staffView.innerHTML = `
-                  <div 
-                      class="workerCard border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2 cursor-pointer"
-                      data-worker-id="${worker.id}"
-                      >
-                      <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
-                      <div class="text-left">
-                          <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
-                          <p class="text-sm text-gray-900">${worker.role}</p>
-                      </div>
-                      <button class="editBtn text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900" data-id="${worker.id}">
-                          Edit
-                      </button>
-                  </div>
-              `;
+                    <div 
+                        class="workerCard border border-gray-400 w-65 text-center flex px-4 py-3 gap-2 items-center relative rounded-xl my-2 cursor-pointer"
+                        data-worker-id="${worker.id}"
+                        >
+                        <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+                        <div class="text-left">
+                            <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
+                            <p class="text-sm text-gray-900">${worker.role}</p>
+                        </div>
+                        <button class="editBtn text-xs rounded absolute right-5 px-2 py-1 border border-amber-400 hover:bg-amber-400 hover:border-0 text-gray-900" data-id="${worker.id}">
+                            Edit
+                        </button>
+                    </div>
+                `;
         pushStaff.appendChild(staffView);
       }
     });
@@ -271,32 +288,32 @@ document.addEventListener("DOMContentLoaded", () => {
     popup.id = "workerPopup";
     popup.className = "fixed inset-0 flex items-center justify-center z-50";
     popup.innerHTML = `
-      <div class="bg-white rounded-lg p-6 w-1/3 space-y-4 relative shadow-2xl border border-gray-200">
-        <button id="closeWorkerPopup" class="absolute top-2 right-2 bg-red-600 rounded-full w-7 h-7 text-white hover:scale-105">
-          ✕
-        </button>
-        <img src="${
-          worker.photo_upload
-        }" alt="img" class="rounded-full border-2 border-blue-500 h-20 w-20 mx-auto" />
-        <h3 class="text-xl font-semibold text-center">${worker.fullName}</h3>
-        <p class="text-center text-gray-800">${worker.role}</p>
-        <p class="text-center text-gray-800">${worker.email}</p>
-        <p class="text-center text-gray-800">${worker.phone}</p>
-        <div>
-          <h4 class="font-semibold border-b mb-2">Experiences</h4>
-          ${worker.exp
-            .map(
-              (exp) =>
-                `<div class="text-sm mb-2">
-                  <p><strong>${exp.company}</strong> - ${exp.role}</p>
-                  <p>${exp.startDate} to ${exp.endDate}</p>
-                  <p>${exp.experience}</p>
-                </div>`
-            )
-            .join("")}
+        <div class="bg-white rounded-lg p-6 w-1/3 space-y-4 relative shadow-2xl border border-gray-200">
+          <button id="closeWorkerPopup" class="absolute top-2 right-2 bg-red-600 rounded-full w-7 h-7 text-white hover:scale-105">
+            ✕
+          </button>
+          <img src="${
+            worker.photo_upload
+          }" alt="img" class="rounded-full border-2 border-blue-500 h-20 w-20 mx-auto" />
+          <h3 class="text-xl font-semibold text-center">${worker.fullName}</h3>
+          <p class="text-center text-gray-800">${worker.role}</p>
+          <p class="text-center text-gray-800">${worker.email}</p>
+          <p class="text-center text-gray-800">${worker.phone}</p>
+          <div>
+            <h4 class="font-semibold border-b mb-2">Experiences</h4>
+            ${worker.exp
+              .map(
+                (exp) =>
+                  `<div class="text-sm mb-2">
+                    <p><strong>${exp.company}</strong> - ${exp.role}</p>
+                    <p>${exp.startDate} to ${exp.endDate}</p>
+                    <p>${exp.experience}</p>
+                  </div>`
+              )
+              .join("")}
+          </div>
         </div>
-      </div>
-    `;
+      `;
     document.body.appendChild(popup);
 
     document
@@ -315,7 +332,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const photo_upload = document
       .getElementById("edit_photo_upload")
       .value.trim();
-    if (!fullName || !email || !phone || !role) return;
+
+    const validName = validationRules.edit_full_name.regex.test(fullName);
+    const validEmail = validationRules.edit_email.regex.test(email);
+    const validPhone = validationRules.edit_phone.regex.test(phone);
+    const validPhoto =
+      photo_upload === "" ||
+      validationRules.edit_photo_upload.regex.test(photo_upload);
+
+    if (!validName || !validEmail || !validPhone || !validPhoto || !role) {
+      showError(
+        "edit_full_name",
+        validName,
+        validationRules.edit_full_name.error
+      );
+      showError("edit_email", validEmail, validationRules.edit_email.error);
+      showError("edit_phone", validPhone, validationRules.edit_phone.error);
+      if (photo_upload !== "") {
+        showError(
+          "edit_photo_upload",
+          validPhoto,
+          validationRules.edit_photo_upload.error
+        );
+      }
+      return;
+    }
+
     const workers = getWorkers();
     const index = workers.findIndex((w) => w.id === currentEditId);
     if (index === -1) return;
@@ -369,15 +411,15 @@ document.addEventListener("DOMContentLoaded", () => {
         div.className =
           "border border-gray-300 rounded-lg p-4 flex items-center gap-4";
         div.innerHTML = `
-        <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
-        <div class="text-left">
-          <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
-          <p class="text-sm text-gray-700">${worker.role}</p>
-        </div>
-        <button class="assigned text-xs rounded absolute right-8 px-2 py-1 border border-blue-400 hover:bg-blue-400 hover:border-0 text-gray-900" data-id="${worker.id}">
-          Assign
-        </button>
-      `;
+          <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-13 w-13" />
+          <div class="text-left">
+            <h4 class="text-gray-900 text-sm font-semibold">${worker.fullName}</h4>
+            <p class="text-sm text-gray-700">${worker.role}</p>
+          </div>
+          <button class="assigned text-xs rounded absolute right-8 px-2 py-1 border border-blue-400 hover:bg-blue-400 hover:border-0 text-gray-900" data-id="${worker.id}">
+            Assign
+          </button>
+        `;
         showWorkersContent.appendChild(div);
       }
     });
@@ -394,6 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   Object.keys(roomMap).forEach((id) => {
     document.getElementById(id).addEventListener("click", () => {
+      currentTargetRoom = id.replace("Btn", "_room");
       renderAvailableWorkers(roomMap[id]);
       showWorkersModal.classList.remove("hidden");
     });
@@ -401,6 +444,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   closeShowWorkers.addEventListener("click", () => {
     showWorkersModal.classList.add("hidden");
+    currentTargetRoom = null;
   });
 
   const rooms = [
@@ -409,16 +453,106 @@ document.addEventListener("DOMContentLoaded", () => {
     "server_room",
     "reception_room",
   ];
+  function checkRoomStatus() {
+    rooms.forEach((room) => {
+      const room_check = document.getElementById(room);
+      if (!room_check) return;
+      const red_room = [
+        "bg-red-500/50",
+        "rounded",
+        "border-2",
+        "border-red-800",
+      ];
+      if (room_check.querySelectorAll(".workerCard").length <= 0) {
+        room_check.classList.add(...red_room);
+      } else {
+        room_check.classList.remove(...red_room);
+      }
+    });
+  }
 
-  rooms.forEach((room) => {
-    const room_check = document.getElementById(room);
-    const red_room = ["bg-red-500/50", "rounded", "border-2", "border-red-800"];
+  function spawnWorkerInRoom(worker, roomId) {
+    const roomDiv = document.getElementById(roomId);
+    if (roomDiv) {
+      let list = roomDiv.querySelector(".worker-list");
+      if (!list) {
+        list = document.createElement("div");
+        list.className =
+          "worker-list absolute bottom-14 left-1/2 transform -translate-x-1/2 w-full max-h-40 overflow-y-auto flex flex-col items-center gap-1 z-20 px-2 scrollbar-thin";
+        roomDiv.appendChild(list);
+      }
 
-    if (room_check.childElementCount <= 2) {
-      room_check.classList.add(...red_room);
-    } else {
-      room_check.classList.remove(...red_room);
+      const card = document.createElement("div");
+      card.className =
+        "workerCard bg-white border border-gray-400 w-40 text-center flex px-3 py-1 items-center shrink-0 relative rounded-xl cursor-pointer shadow-md mb-1";
+      card.dataset.workerId = worker.id;
+
+      card.innerHTML = `
+        <img src="${worker.photo_upload}" alt="img" class="rounded-full border-2 border-blue-500 h-9 w-9 object-cover" />
+        <div class="text-left ml-2 overflow-hidden"> 
+          <h4 class="text-gray-900 text-xs font-semibold truncate">${worker.fullName}</h4>
+          <p class="text-[10px] text-gray-600 truncate">${worker.role}</p>
+        </div>
+        <button class="unassignBtn absolute top-1 right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center hover:bg-red-700">✕</button>
+      `;
+
+      list.appendChild(card);
+
+      card.addEventListener("click", (e) => {
+        if (e.target.classList.contains("unassignBtn")) return;
+        showWorkerPopup(worker.id);
+      });
+
+      card.querySelector(".unassignBtn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        const workers = getWorkers();
+        const idx = workers.findIndex((w) => w.id === worker.id);
+        if (idx !== -1) {
+          workers[idx].assign = "false";
+          workers[idx].room = null;
+          localStorage.setItem("allWorkers", JSON.stringify(workers));
+        }
+        card.remove();
+        renderWorkersFromStorage();
+        checkRoomStatus();
+      });
+
+      checkRoomStatus();
+    }
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("assigned")) {
+      const id = Number(e.target.dataset.id);
+      const workers = getWorkers();
+      const index = workers.findIndex((w) => w.id === id);
+      workers[index].assign = "true";
+      workers[index].room = currentTargetRoom;
+      localStorage.setItem("allWorkers", JSON.stringify(workers));
+      renderAvailableWorkers(
+        Object.keys(roomMap).find(
+          (k) =>
+            k.replace("Btn", "_room") === currentTargetRoom &&
+            roomMap[k] === workers[index].role
+        )
+          ? workers[index].role
+          : "Manager"
+      );
+
+      spawnWorkerInRoom(workers[index], currentTargetRoom);
     }
   });
+
+  function initAssignedWorkers() {
+    const workers = getWorkers();
+    workers.forEach((w) => {
+      if (w.assign === "true" && w.room) {
+        spawnWorkerInRoom(w, w.room);
+      }
+    });
+  }
+
+  checkRoomStatus();
   renderWorkersFromStorage();
+  initAssignedWorkers();
 });
