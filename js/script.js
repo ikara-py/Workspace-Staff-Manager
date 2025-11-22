@@ -540,6 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       spawnWorkerInRoom(workers[index], currentTargetRoom);
+      renderWorkersFromStorage();
     }
   });
 
